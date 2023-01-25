@@ -190,7 +190,7 @@ function Call() {
 						</div>
 						<div className="call-duration">
 							<p className="label">Call Duration</p>
-							<p className="time">00:01:55</p>
+							<p className="time">00:00:00</p>
 						</div>
 					</div>
 					<div className="call-controls">
