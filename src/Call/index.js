@@ -43,7 +43,7 @@ function Call() {
 				Device.disconnectAll()
 			}
 		})
-	}, [contact])
+	}, [contact, onPhone])
 
 	function handleToggleMute() {
 		var mute = !muted
