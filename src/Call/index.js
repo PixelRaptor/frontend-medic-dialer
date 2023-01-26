@@ -52,15 +52,8 @@ function Call() {
 	}
 	function handleToggleCall() {
 		console.log("call")
-		if (!onPhone) {
-			setMuted(false)
-			setOnPhone(true)
-			const number = "+" + 263774320554
-			Device.connect({ number: number })
-		} else {
-			// hang up call in progress
-			Device.disconnectAll()
-		}
+		// hang up call in progress
+		Device.disconnectAll()
 	}
 	return (
 		<>
