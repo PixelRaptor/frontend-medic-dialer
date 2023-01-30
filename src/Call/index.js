@@ -9,29 +9,50 @@ function Call() {
 	const [muted, setMuted] = useState(false)
 	const { contact } = useParams()
 
+	const [second, setSeconds] = useState(0)
+	const [minute, setMinutes] = useState(0)
+	const [hour, setHours] = useState(0)
+
+	useEffect(() => {
+		if (onPhone) {
+			const timer = () => {
+				if (second < 60) {
+					setSeconds(second + 1)
+					console.log(second)
+				} else {
+					setSeconds(0)
+					setMinutes(minute + 1)
+					if (minute < 60) {
+						setMinutes(minute + 1)
+					} else {
+						setMinutes(0)
+						setHours(hour + 1)
+					}
+				}
+			}
+			const interval = setInterval(() => {
+				timer()
+			}, 1000)
+			return () => clearInterval(interval)
+		}
+	})
+
 	useEffect(() => {
 		// Fetch Twilio capability token from our Node.js server
 		$.getJSON("https://medic-staging.baobabcircle.com/token")
 			.done(function (data) {
-				console.log(data.token)
 				Device.setup(data.token)
 			})
 			.fail(function (err) {
 				console.log(err)
 				// self.setState({ log: "Could not fetch token, see console.log" })
 			})
-
 		// Configure event handlers for Twilio Device
 		Device.on("disconnect", function () {
 			setOnPhone(false)
 			console.log("Call ended.")
 		})
 
-		Device.on("ready", function () {
-			console.log("connected")
-		})
-	})
-	useEffect(() => {
 		Device.on("ready", function () {
 			if (!onPhone) {
 				setMuted(false)
@@ -43,15 +64,39 @@ function Call() {
 				Device.disconnectAll()
 			}
 		})
-	}, [contact, onPhone])
+	}, [])
+
+	useEffect(() => {
+		if (onPhone) {
+			const timer = () => {
+				if (second < 60) {
+					setSeconds(second + 1)
+					console.log(second)
+				} else {
+					setSeconds(0)
+					setMinutes(minute + 1)
+					if (minute < 60) {
+						setMinutes(minute + 1)
+					} else {
+						setMinutes(0)
+						setHours(hour + 1)
+					}
+				}
+			}
+			const interval = setInterval(() => {
+				timer()
+			}, 1000)
+			return () => clearInterval(interval)
+		}
+	})
 
 	function handleToggleMute() {
 		var mute = !muted
 		setMuted(mute)
 		Device.activeConnection().mute(muted)
 	}
-	function handleToggleCall() {
-		console.log("call")
+	function handleEndCall() {
+		console.log("end call")
 		// hang up call in progress
 		Device.disconnectAll()
 	}
@@ -181,10 +226,17 @@ function Call() {
 								</div>
 							</div>
 						</div>
-						<div className="call-duration">
-							<p className="label">Call Duration</p>
-							<p className="time">00:00:00</p>
-						</div>
+						{onPhone && (
+							<div className="call-duration">
+								<p className="label">Call Duration</p>
+								<p className="time">
+									{(hour > 9 && hour) || `0${hour}`}:
+									{(minute > 9 && minute) || `0${minute}`}:
+									{(second > 9 && second) || `0${second}`}
+								</p>
+							</div>
+						)}
+						{!onPhone && <p className="label">Connecting</p>}
 					</div>
 					<div className="call-controls">
 						<div className="flex-row-controls">
@@ -293,7 +345,7 @@ function Call() {
 								</div>
 							</button>
 							<button
-								onClick={() => handleToggleCall()}
+								onClick={() => handleEndCall()}
 								className="call-control-button"
 							>
 								<div className="button_inner_wrap">
