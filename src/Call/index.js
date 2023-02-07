@@ -65,7 +65,7 @@ function Call() {
 				Device.disconnectAll()
 			}
 		})
-	}, [])
+	}, [contact, onPhone])
 
 	useEffect(() => {
 		if (minute >= 2) {
