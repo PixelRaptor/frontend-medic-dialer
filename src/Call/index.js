@@ -7,7 +7,7 @@ import "./index.css"
 function Call() {
 	const [onPhone, setOnPhone] = useState(false)
 	const [muted, setMuted] = useState(false)
-	const [conneted, setConnected] = useState(false)
+	const [connected, setConnected] = useState(false)
 	const { contact } = useParams()
 
 	const [second, setSeconds] = useState(0)
@@ -74,9 +74,13 @@ function Call() {
 	})
 
 	function handleToggleMute() {
-		var mute = !muted
-		setMuted(mute)
-		Device.activeConnection().mute(muted)
+		if (muted) {
+			setMuted(false)
+			Device.activeConnection().mute(false)
+		} else {
+			Device.activeConnection().mute(true)
+			setMuted(true)
+		}
 	}
 	function handleCallBack() {
 		setConnected(false)
@@ -234,7 +238,12 @@ function Call() {
 								</p>
 							</div>
 						)}
-						{!onPhone && <p className="label">Connecting</p>}
+						{!onPhone && !connected && (
+							<p className="label">Connecting</p>
+						)}
+						{!onPhone && connected && (
+							<p className="label">Disconnected</p>
+						)}
 					</div>
 					<div className="call-controls">
 						<div className="flex-row-controls">
@@ -297,35 +306,63 @@ function Call() {
 								onClick={() => handleToggleMute()}
 								className="call-control-button"
 							>
-								<div className="button_inner_wrap">
-									<div className="call-control-button-graphic">
-										<svg
-											viewBox="0 0 64 64"
-											fill="none"
-											xmlns="http://www.w3.org/2000/svg"
-										>
-											<rect
-												width="64"
-												height="64"
-												rx="32"
-												fill="black"
-												fillOpacity="0.05"
-											/>
-											<path
-												d="M41.4125 31.8421H39.1757C39.1757 32.8158 38.9651 33.7237 38.6099 34.5395L40.2283 36.1579C40.9651 34.8684 41.4125 33.4079 41.4125 31.8421ZM36.123 32.0658C36.123 31.9868 36.1493 31.9211 36.1493 31.8421V23.9474C36.1493 21.7632 34.3862 20 32.202 20C30.0178 20 28.2546 21.7632 28.2546 23.9474V24.1842L36.123 32.0658ZM22.0309 21.3158L20.3599 22.9868L28.2678 30.8947V31.8421C28.2678 34.0263 30.0178 35.7895 32.202 35.7895C32.4914 35.7895 32.7809 35.75 33.0572 35.6842L35.2414 37.8684C34.3072 38.3026 33.2678 38.5526 32.202 38.5526C28.5704 38.5526 25.2283 35.7895 25.2283 31.8421H22.9914C22.9914 36.3289 26.5704 40.0395 30.8862 40.6842V45H33.5178V40.6842C34.7151 40.5132 35.8467 40.0921 36.8599 39.5L42.373 45L44.0441 43.3289L22.0309 21.3158Z"
-												fill="white"
-											/>
-										</svg>
+								{!muted && (
+									<div className="button_inner_wrap">
+										<div className="call-control-button-graphic">
+											<svg
+												viewBox="0 0 64 64"
+												fill="none"
+												xmlns="http://www.w3.org/2000/svg"
+											>
+												<rect
+													width="64"
+													height="64"
+													rx="32"
+													fill="black"
+													fillOpacity="0.05"
+												/>
+												<path
+													d="M41.4125 31.8421H39.1757C39.1757 32.8158 38.9651 33.7237 38.6099 34.5395L40.2283 36.1579C40.9651 34.8684 41.4125 33.4079 41.4125 31.8421ZM36.123 32.0658C36.123 31.9868 36.1493 31.9211 36.1493 31.8421V23.9474C36.1493 21.7632 34.3862 20 32.202 20C30.0178 20 28.2546 21.7632 28.2546 23.9474V24.1842L36.123 32.0658ZM22.0309 21.3158L20.3599 22.9868L28.2678 30.8947V31.8421C28.2678 34.0263 30.0178 35.7895 32.202 35.7895C32.4914 35.7895 32.7809 35.75 33.0572 35.6842L35.2414 37.8684C34.3072 38.3026 33.2678 38.5526 32.202 38.5526C28.5704 38.5526 25.2283 35.7895 25.2283 31.8421H22.9914C22.9914 36.3289 26.5704 40.0395 30.8862 40.6842V45H33.5178V40.6842C34.7151 40.5132 35.8467 40.0921 36.8599 39.5L42.373 45L44.0441 43.3289L22.0309 21.3158Z"
+													fill="white"
+												/>
+											</svg>
+										</div>
+										<div className="call-control-button-label">
+											Mute
+										</div>
 									</div>
-									<div className="call-control-button-label">
-										Mute
+								)}
+								{muted && (
+									<div className="button_inner_wrap">
+										{" "}
+										<div className="call-control-button-graphic">
+											<svg
+												viewBox="0 0 64 64"
+												fill="none"
+												xmlns="http://www.w3.org/2000/svg"
+											>
+												<rect
+													width="64"
+													height="64"
+													rx="32"
+													fill="white"
+												/>
+												<path
+													d="M41.4125 31.8421H39.1757C39.1757 32.8158 38.9651 33.7237 38.6099 34.5395L40.2283 36.1579C40.9651 34.8684 41.4125 33.4079 41.4125 31.8421ZM36.123 32.0658C36.123 31.9868 36.1493 31.9211 36.1493 31.8421V23.9474C36.1493 21.7632 34.3862 20 32.202 20C30.0178 20 28.2546 21.7632 28.2546 23.9474V24.1842L36.123 32.0658ZM22.0309 21.3158L20.3599 22.9868L28.2678 30.8947V31.8421C28.2678 34.0263 30.0178 35.7895 32.202 35.7895C32.4914 35.7895 32.7809 35.75 33.0572 35.6842L35.2414 37.8684C34.3072 38.3026 33.2678 38.5526 32.202 38.5526C28.5704 38.5526 25.2283 35.7895 25.2283 31.8421H22.9914C22.9914 36.3289 26.5704 40.0395 30.8862 40.6842V45H33.5178V40.6842C34.7151 40.5132 35.8467 40.0921 36.8599 39.5L42.373 45L44.0441 43.3289L22.0309 21.3158Z"
+													fill="#003C5B"
+												/>
+											</svg>
+										</div>
+										<div className="call-control-button-label">
+											Muted
+										</div>
 									</div>
-								</div>
+								)}
 							</button>
 						</div>
 					</div>
 				</div>
-				{conneted && !onPhone && (
+				{connected && !onPhone && (
 					<div className="container">
 						<div className="popup">
 							<div className="heading">
