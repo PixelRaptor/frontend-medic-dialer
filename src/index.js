@@ -5,7 +5,6 @@ import "./index.css"
 import App from "./App"
 import reportWebVitals from "./reportWebVitals"
 import Call from "./Call"
-import Summary from "./Summary"
 
 const router = createBrowserRouter([
 	{
