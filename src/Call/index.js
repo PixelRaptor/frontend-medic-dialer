@@ -16,6 +16,9 @@ function Call() {
 
 	useEffect(() => {
 		if (onPhone) {
+			if (minute >= 2) {
+				handleEndCall()
+			}
 			const timer = () => {
 				if (second < 60) {
 					setSeconds(second + 1)
@@ -52,28 +55,9 @@ function Call() {
 		Device.on("disconnect", function () {
 			setOnPhone(false)
 		})
-
-		Device.on("ready", function () {
-			setConnected(false)
-			if (!onPhone) {
-				setMuted(false)
-				setOnPhone(true)
-				const number = "+" + contact
-				Device.connect({ number })
-			} else {
-				// hang up call in progress
-				Device.disconnectAll()
-			}
-		})
 	}, [contact, onPhone])
 
-	useEffect(() => {
-		if (minute >= 2) {
-			handleEndCall()
-		}
-	})
-
-	function handleToggleMute() {
+	const handleToggleMute = () => {
 		if (muted) {
 			setMuted(false)
 			Device.activeConnection().mute(false)
@@ -82,7 +66,7 @@ function Call() {
 			setMuted(true)
 		}
 	}
-	function handleCallBack() {
+	const handleCallBack = () => {
 		setConnected(false)
 		setSeconds(0)
 		setMinutes(0)
@@ -93,13 +77,30 @@ function Call() {
 			const number = "+" + contact
 			Device.connect({ number })
 		} else {
-			// hang up call in progress
 			Device.disconnectAll()
 		}
 	}
-	function handleEndCall() {
+	const initCall = () => {
+		setConnected(false)
+		setSeconds(0)
+		setMinutes(0)
+		setHours(0)
+		if (!onPhone) {
+			setMuted(false)
+			setOnPhone(true)
+			const number = "+" + contact
+			Device.connect({ number })
+		}
+	}
+	const onClose = () => {
+		window.opener = null
+		window.open("", "_self")
+		window.close()
+	}
+	const handleEndCall = () => {
 		setOnPhone(false)
 		Device.disconnectAll()
+		onClose()
 	}
 	return (
 		<>
@@ -239,7 +240,7 @@ function Call() {
 							</div>
 						)}
 						{!onPhone && !connected && (
-							<p className="label">Connecting</p>
+							<p className="label">Idle</p>
 						)}
 						{!onPhone && connected && (
 							<p className="label">Disconnected</p>
@@ -362,6 +363,27 @@ function Call() {
 						</div>
 					</div>
 				</div>
+				{!connected && !onPhone && (
+					<div className="container">
+						<div className="popup">
+							<div className="heading">
+								<h4>Start Direct Call</h4>
+							</div>
+							<div className="summary">
+								<p>
+									You're about to make a direct phone call to
+									+{contact}
+								</p>
+							</div>
+							<div className="controls">
+								<button onClick={() => initCall()}>
+									Continue
+								</button>
+							</div>
+						</div>
+						<div className="overlay"></div>
+					</div>
+				)}
 				{connected && !onPhone && (
 					<div className="container">
 						<div className="popup">
@@ -370,9 +392,8 @@ function Call() {
 							</div>
 							<div className="summary">
 								<p>
-									Your call has ended. Please click the back
-									button at the top of the screen to dismiss
-									this screen.
+									Your call has ended. You can close the
+									browser and go back to Medic app now
 								</p>
 							</div>
 							<div className="controls">
