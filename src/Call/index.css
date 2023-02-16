@@ -81,7 +81,9 @@
 	position: relative;
 	cursor: pointer;
 }
-
+.disabled {
+	opacity: 0.1;
+}
 .call-control-button:active {
 	opacity: 0.9;
 }

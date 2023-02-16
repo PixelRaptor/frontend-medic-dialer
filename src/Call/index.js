@@ -249,7 +249,10 @@ function Call() {
 					<div className="call-controls">
 						{onPhone && (
 							<div className="flex-row-controls">
-								<button className="call-control-button">
+								<button
+									className="call-control-button disabled"
+									disabled
+								>
 									<div className="button_inner_wrap">
 										<div className="call-control-button-graphic">
 											<svg
