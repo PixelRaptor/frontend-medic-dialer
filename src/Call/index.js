@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { useParams } from "react-router"
 import { Device } from "twilio-client"
-import $ from "jquery"
 import "./index.css"
 
 function Call() {
@@ -52,7 +51,6 @@ function Call() {
 			.then((result) => {
 				Device.setup(result.token)
 			})
-
 		// Configure event handlers for Twilio Device
 		Device.on("disconnect", function () {
 			setOnPhone(false)
