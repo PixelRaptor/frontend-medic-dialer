@@ -5,11 +5,16 @@ import "./index.css"
 import App from "./App"
 import reportWebVitals from "./reportWebVitals"
 import Call from "./Call"
+import Dialer from "./Dialer"
 
 const router = createBrowserRouter([
 	{
 		path: "/",
 		element: <App />,
+	},
+	{
+		path: "/dialer",
+		element: <Dialer />,
 	},
 	{
 		path: "/call/:contact",

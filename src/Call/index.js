@@ -42,15 +42,17 @@ function Call() {
 	})
 
 	useEffect(() => {
-		// Fetch Twilio capability token from our Node.js server
-		$.getJSON("https://medic-staging.baobabcircle.com/token")
-			.done(function (data) {
-				Device.setup(data.token)
+		fetch("https://medic-staging.baobabcircle.com/token")
+			.then((response) => {
+				if (response.status >= 400) {
+					throw new Error("Server responds with error!")
+				}
+				return response.json()
 			})
-			.fail(function (err) {
-				console.log(err)
-				// self.setState({ log: "Could not fetch token, see console.log" })
+			.then((result) => {
+				Device.setup(result.token)
 			})
+
 		// Configure event handlers for Twilio Device
 		Device.on("disconnect", function () {
 			setOnPhone(false)
@@ -104,7 +106,7 @@ function Call() {
 	}
 	return (
 		<>
-			<div className="dialer">
+			<div className="call">
 				<div className="call-screen">
 					<div className="call-info">
 						<div className="call-type">
