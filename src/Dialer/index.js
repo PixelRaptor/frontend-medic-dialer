@@ -181,7 +181,7 @@ function Dialer() {
 							type="tel"
 							value={contact}
 							id="contact"
-							placeholder="254717765445"
+							placeholder="254717700443"
 							onChange={(e) => setContact(e.target.value)}
 						/>
 					</div>
