@@ -29,8 +29,7 @@ function Dialer() {
 			.then((result) => {
 				if (result.message === "RESULTS FOUND.") {
 					if (result.data.meta.count === 1) {
-						// navigate(`/call/${contact}`)
-						navigate(`/call/263774320554`)
+						navigate(`/call/${contact}`)
 					}
 				} else {
 					setVerification(false)

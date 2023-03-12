@@ -10,11 +10,11 @@ import Dialer from "./Dialer"
 const router = createBrowserRouter([
 	{
 		path: "/",
-		element: <App />,
+		element: <Dialer />,
 	},
 	{
 		path: "/dialer",
-		element: <Dialer />,
+		element: <App />,
 	},
 	{
 		path: "/call/:contact",
