@@ -5,10 +5,10 @@ import "./index.css"
 function Dialer() {
 	const [contact, setContact] = useState("")
 	const [verification, setVerification] = useState(true)
-	const [token, setToken] = useState(
+	const [token] = useState(
 		"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiN2JjNThjNTUtMWFmZC00YjVhLTlhNzEtN2QxMWQ2MTFhZDQxIiwidXNlcm5hbWUiOiJncm91cGFkbWluMkBjYXJlZ2l2ZXIuY29tIiwic3RhdHVzIjoiQUNUSVZFIiwidHlwZSI6Imdyb3VwLWFkbWluIiwicm9sZXMiOlsiR1JPVVBfTUFOQUdFTUVOVF9BRE1JTiJdLCJwZXJtaXNzaW9ucyI6W119LCJpYXQiOjE2MDU3NjIwMjIsImV4cCI6MTYwODM1NDAyMn0.SBfLq-aPMco3gdqM4JAyJ8xMc_0cxv1-JZ9mgyXhFx0"
 	)
-	const [url, setUrl] = useState(
+	const [url] = useState(
 		`https://api.baobabcircle.com/care-giver/patients/search`
 	)
 	const navigate = useNavigate()
