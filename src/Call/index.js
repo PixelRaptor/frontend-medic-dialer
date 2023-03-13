@@ -397,8 +397,8 @@ function Call() {
 							</div>
 							<div className="summary">
 								<p>
-									Your call has ended. You can close the
-									browser and go back to Medic app now
+									You can close the browser or call the user
+									again
 								</p>
 							</div>
 							<div className="controls">
